@@ -16,7 +16,7 @@ function packageGames(games, hasAlarm, calName) {
         let gameName = "";
         // gameName = game.secondLevelGameName;
         // gameName += ` ${game.bMatchName}`
-        gameName += ` ${game.teamA?.teamSpName || "TBD"} vs ${game.teamB?.teamSpName || "TBD"}`
+        gameName += `${game.teamA?.teamSpName || "TBD"} vs ${game.teamB?.teamSpName || "TBD"}`
         const hasResult = parseInt(game.scoreA) || parseInt(game.scoreB);
         if (hasResult) {
             gameName += ` - ${game.scoreA} : ${game.scoreB}`;
