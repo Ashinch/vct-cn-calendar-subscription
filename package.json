@@ -1,0 +1,21 @@
+{
+  "name": "vct-cn-calendar-subscription",
+  "version": "1.0.0",
+  "description": "a valorant vct-cn contest subscription, powered by nodejs and tencent official api.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "valorant",
+    "vct",
+    "ics",
+    "calendar"
+  ],
+  "author": "Ashinch",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "ics": "^2.27.0",
+    "superagent": "^6.1.0"
+  }
+}

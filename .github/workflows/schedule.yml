@@ -1,0 +1,30 @@
+name: VCT CN Publisher
+
+on:
+    push:
+        branches:
+            - main
+    schedule:
+        - cron: "0 * * * *"
+jobs:
+    VCT-CN-Publisher:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Install Node.js, NPM
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 14
+            - name: "Install dependencies"
+              run: npm install
+            - name: "Working"
+              timeout-minutes: 350
+              run: npm run start
+            - name: Commit files
+              run: |
+                  git config --global user.email "Glaxyinfinite@outlook.com"
+                  git config --global user.name "Ashinch"
+                  git add -A
+                  git commit -m "VCT CN calendar has updated" -a
+                  git push
