@@ -7,8 +7,7 @@
 Choose a link to add to your Apple Calendar or Google Calendar, etc.
 
 - **CDN:** `https://cdn.jsdelivr.net/gh/Ashinch/vct-cn-calendar-subscription/vct-cn-alarm.ics`
-- **GitHub:** `https://github.com/Ashinch/vct-cn-calendar-subscription/blob/main/vct-cn-alarm.ics`
-
+- **GitHub:** `https://raw.githubusercontent.com/Ashinch/vct-cn-calendar-subscription/main/vct-cn-alarm.ics`
 
 ### Apple Calendar
 
