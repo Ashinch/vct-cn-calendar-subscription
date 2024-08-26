@@ -11,7 +11,7 @@ const API_URL = "https://val.native.game.qq.com/esports/v1/data/VAL_Match_100002
 function packageGames(games, hasAlarm, calName) {
     return games.map((game) => {
         const gameDate = new Date(game.matchDate);
-        const durationMinutes = 1 * 60;
+        const durationMinutes = 2 * 60;
         const gameEndDate = new Date(gameDate.getTime() + durationMinutes * 60 * 1000);
         let gameName = "";
         // gameName = game.secondLevelGameName;
