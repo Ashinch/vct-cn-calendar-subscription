@@ -23,8 +23,8 @@ jobs:
               run: npm run start
             - name: Commit files
               run: |
-                  git config --global user.email "Glaxyinfinite@outlook.com"
-                  git config --global user.name "Ashinch"
+                  git config --global user.email "vct@qq.com"
+                  git config --global user.name "vct"
                   git add -A
                   git commit -m "VCT CN calendar has updated" -a
                   git push
