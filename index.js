@@ -1,7 +1,7 @@
 const request = require("superagent");
 const icsTool = require("ics");
 const fs = require("fs");
-const API_URL = "https://val.native.game.qq.com/esports/v1/data/VAL_Match_1000021.json";
+const API_URL = "https://val.native.game.qq.com/esports/v1/data/VAL_Match_1000031.json";
 
 
 /**
