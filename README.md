@@ -1,6 +1,8 @@
 # VCT CN Calendar Subscription
 
-> Credit: [LOL_Game_Subscription](https://github.com/TankNee/LOL_Game_Subscription)
+> Credit
+> - [LOL_Game_Subscription](https://github.com/TankNee/LOL_Game_Subscription)
+> - [haojiao.cc](haojiao.cc)
 
 ## Subscribe
 
