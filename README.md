@@ -2,7 +2,7 @@
 
 > Credit
 > - [LOL_Game_Subscription](https://github.com/TankNee/LOL_Game_Subscription)
-> - [haojiao.cc](haojiao.cc)
+> - [haojiao.cc](https://haojiao.cc)
 
 ## Subscribe
 
