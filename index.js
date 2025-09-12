@@ -1,7 +1,7 @@
 const request = require("superagent");
 const icsTool = require("ics");
 const fs = require("fs");
-const API_URL = "https://val.native.game.qq.com/esports/v1/data/VAL_Match_1000041.json";
+const API_URL = "https://val.native.game.qq.com/esports/v1/data/VAL_Match_1000045.json";
 
 
 /**
@@ -30,7 +30,7 @@ function packageGames(games, hasAlarm, calName) {
                 name: `无畏契约${game.secondLevelGameName}`,
                 email: "vct@qq.com",
             },
-            url: "https://web.haojiao.cc/h/t2Ud5pOQlscKLbRC/ZSlLKHlD3OmdVfyj",
+            url: "https://web.haojiao.cc/h/t2Ud5pOQlscKLbRC/adPVjlSLS6j8ja7S",
             status: "TENTATIVE",
             calName: calName ? calName : "VCT-CN",
             geo: { lat: 30.0095, lon: 120.2669 },
