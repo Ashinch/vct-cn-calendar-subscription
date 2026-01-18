@@ -10,7 +10,7 @@
       "failCount": 0
     },
     "1000010": {
-      "failCount": 1
+      "failCount": 0
     },
     "1000011": {
       "failCount": 0
@@ -70,10 +70,10 @@
       "failCount": 0
     },
     "1000038": {
-      "failCount": 1
+      "failCount": 0
     },
     "1000040": {
-      "failCount": 0
+      "failCount": 1
     },
     "1000041": {
       "failCount": 0
