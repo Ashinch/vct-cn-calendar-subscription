@@ -67,7 +67,7 @@
       "failCount": 0
     },
     "1000037": {
-      "failCount": 1
+      "failCount": 0
     },
     "1000038": {
       "failCount": 0
@@ -79,25 +79,25 @@
       "failCount": 0
     },
     "1000044": {
-      "failCount": 2
+      "failCount": 0
     },
     "1000045": {
-      "failCount": 2
+      "failCount": 0
     },
     "1000048": {
-      "failCount": 2
+      "failCount": 0
     },
     "1000050": {
       "failCount": 0
     },
     "1000051": {
-      "failCount": 2
+      "failCount": 0
     },
     "1000053": {
-      "failCount": 2
+      "failCount": 0
     },
     "1000055": {
-      "failCount": 2
+      "failCount": 0
     }
   },
   "maxId": 1000055
