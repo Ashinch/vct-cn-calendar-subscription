@@ -67,37 +67,37 @@
       "failCount": 0
     },
     "1000037": {
-      "failCount": 0
+      "failCount": 1
     },
     "1000038": {
       "failCount": 0
     },
     "1000040": {
-      "failCount": 1
+      "failCount": 0
     },
     "1000041": {
-      "failCount": 1
+      "failCount": 0
     },
     "1000044": {
-      "failCount": 1
+      "failCount": 2
     },
     "1000045": {
-      "failCount": 1
+      "failCount": 2
     },
     "1000048": {
-      "failCount": 1
+      "failCount": 2
     },
     "1000050": {
-      "failCount": 1
+      "failCount": 0
     },
     "1000051": {
-      "failCount": 1
+      "failCount": 2
     },
     "1000053": {
-      "failCount": 1
+      "failCount": 2
     },
     "1000055": {
-      "failCount": 1
+      "failCount": 2
     }
   },
   "maxId": 1000055
