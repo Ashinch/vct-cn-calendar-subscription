@@ -10,7 +10,7 @@
       "failCount": 0
     },
     "1000010": {
-      "failCount": 2
+      "failCount": 0
     },
     "1000011": {
       "failCount": 0
@@ -32,9 +32,6 @@
     },
     "1000017": {
       "failCount": 0
-    },
-    "1000018": {
-      "failCount": 2
     },
     "1000019": {
       "failCount": 0
@@ -61,7 +58,7 @@
       "failCount": 0
     },
     "1000034": {
-      "failCount": 2
+      "failCount": 0
     },
     "1000037": {
       "failCount": 0
@@ -70,7 +67,7 @@
       "failCount": 0
     },
     "1000040": {
-      "failCount": 2
+      "failCount": 0
     },
     "1000044": {
       "failCount": 0
