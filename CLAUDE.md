@@ -10,6 +10,7 @@ VCT CN Calendar Subscription 是一个 Node.js 项目，用于生成无畏契约
 
 ```
 ├── index.js              # 主入口文件，包含所有核心逻辑
+├── cache/                # API 数据缓存目录（每个有效 ID 一个 .json 文件）
 ├── vct-cn-alarm.ics      # 生成的日历文件（带提醒）
 ├── package.json          # 项目依赖配置
 └── .github/workflows/
@@ -41,11 +42,11 @@ npm start
 ## Data Source
 
 - API 基地址: `https://val.native.game.qq.com/esports/v1/data/VAL_Match_{ID}.json`
-- 智能缓存机制：
-  - 缓存已知有效的 API ID 到 `api-cache.json`
-  - 每次运行只请求：已缓存的 ID + 向后探测 10 个新 ID
-  - 失效淘汰：连续 3 次失败后移除缓存
-- 使用 `matchId` 进行去重，避免重复比赛
+- 文件缓存机制：
+  - 每个有效 API ID 保存为独立的 `cache/{ID}.json` 文件
+  - 每次运行刷新所有已缓存的 ID，并向后探测 10 个新 ID
+  - 请求成功则覆盖缓存文件，失败则使用已有缓存（避免维护期间丢失数据）
+- 使用 `bMatchId` 进行去重，避免重复比赛
 
 ## Calendar Features
 

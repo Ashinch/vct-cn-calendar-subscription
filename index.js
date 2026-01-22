@@ -1,33 +1,70 @@
 const request = require("superagent");
 const icsTool = require("ics");
 const fs = require("fs");
+const path = require("path");
 
 const API_BASE = "https://val.native.game.qq.com/esports/v1/data/VAL_Match_";
-const CACHE_FILE = "./api-cache.json";
+const CACHE_DIR = "./cache";
 const PROBE_AHEAD = 10;        // 向后探测的 ID 数量
-const MAX_FAIL_COUNT = 3;      // 连续失败多少次后移除缓存
 
 /**
- * 加载缓存
- * @returns {{validIds: {[id: string]: {failCount: number}}, maxId: number}}
+ * 确保缓存目录存在
  */
-function loadCache() {
-    try {
-        if (fs.existsSync(CACHE_FILE)) {
-            return JSON.parse(fs.readFileSync(CACHE_FILE, "utf-8"));
-        }
-    } catch (err) {
-        console.log("Cache file corrupted, starting fresh");
+function ensureCacheDir() {
+    if (!fs.existsSync(CACHE_DIR)) {
+        fs.mkdirSync(CACHE_DIR, { recursive: true });
     }
-    return { validIds: {}, maxId: 1000000 };
 }
 
 /**
- * 保存缓存
- * @param {{validIds: {[id: string]: {failCount: number}}, maxId: number}} cache
+ * 获取所有已缓存的 ID（从文件名解析）
+ * @returns {number[]}
  */
-function saveCache(cache) {
-    fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2));
+function getCachedIds() {
+    ensureCacheDir();
+    const files = fs.readdirSync(CACHE_DIR);
+    return files
+        .filter(f => f.endsWith(".json"))
+        .map(f => parseInt(path.basename(f, ".json")))
+        .filter(id => !isNaN(id))
+        .sort((a, b) => a - b);
+}
+
+/**
+ * 获取最大的已缓存 ID
+ * @returns {number}
+ */
+function getMaxCachedId() {
+    const ids = getCachedIds();
+    return ids.length > 0 ? Math.max(...ids) : 1000000;
+}
+
+/**
+ * 保存单个 ID 的数据到缓存文件
+ * @param {number} id
+ * @param {{}[]} games
+ */
+function saveCacheFile(id, games) {
+    ensureCacheDir();
+    const filePath = path.join(CACHE_DIR, `${id}.json`);
+    fs.writeFileSync(filePath, JSON.stringify(games, null, 2));
+}
+
+/**
+ * 读取单个缓存文件
+ * @param {number} id
+ * @returns {{}[]|null}
+ */
+function loadCacheFile(id) {
+    const filePath = path.join(CACHE_DIR, `${id}.json`);
+    try {
+        if (fs.existsSync(filePath)) {
+            return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+        }
+    } catch (err) {
+        console.log(`Failed to read cache file ${id}.json`);
+    }
+    return null;
 }
 
 /**
@@ -50,71 +87,61 @@ async function fetchApiData(id) {
 }
 
 /**
- * 智能获取所有有效的 API 数据
+ * 刷新已缓存的 ID 并探测新 ID
  * @returns {Promise<{}[]>}
  */
 async function fetchAllGames() {
-    const cache = loadCache();
-    const cachedIds = Object.keys(cache.validIds).map(Number);
+    const cachedIds = getCachedIds();
+    const maxId = getMaxCachedId();
 
-    // 生成需要探测的 ID 列表：已缓存的 + 从 maxId 向后探测
+    // 生成探测的新 ID 列表
     const probeIds = [];
-    for (let i = cache.maxId + 1; i <= cache.maxId + PROBE_AHEAD; i++) {
+    for (let i = maxId + 1; i <= maxId + PROBE_AHEAD; i++) {
         probeIds.push(i);
     }
 
-    const allIds = [...new Set([...cachedIds, ...probeIds])];
-    console.log(`Fetching ${cachedIds.length} cached IDs + probing ${probeIds.length} new IDs (${cache.maxId + 1} - ${cache.maxId + PROBE_AHEAD})`);
+    console.log(`Refreshing ${cachedIds.length} cached IDs, probing ${probeIds.length} new IDs (${maxId + 1} - ${maxId + PROBE_AHEAD})`);
 
-    // 并发请求所有 ID
+    // 并发请求：刷新已缓存的 + 探测新的
+    const allIds = [...cachedIds, ...probeIds];
     const results = await Promise.all(allIds.map(id => fetchApiData(id)));
 
-    // 处理结果，更新缓存
-    const validResults = [];
-    let newMaxId = cache.maxId;
+    // 处理结果
+    const allGames = [];
 
     for (let i = 0; i < allIds.length; i++) {
         const id = allIds[i];
         const result = results[i];
+        const isCached = cachedIds.includes(id);
 
         if (result !== null) {
-            // 成功：重置失败计数，更新 maxId
-            cache.validIds[id] = { failCount: 0 };
-            if (id > newMaxId) newMaxId = id;
-            validResults.push(result);
-            console.log(`✓ ID ${id}: ${result.games.length} matches`);
-        } else if (cache.validIds[id] !== undefined) {
-            // 已缓存的 ID 失败：增加失败计数
-            cache.validIds[id].failCount = (cache.validIds[id].failCount || 0) + 1;
-            if (cache.validIds[id].failCount >= MAX_FAIL_COUNT) {
-                console.log(`✗ ID ${id}: removed after ${MAX_FAIL_COUNT} failures`);
-                delete cache.validIds[id];
-            } else {
-                console.log(`✗ ID ${id}: fail count ${cache.validIds[id].failCount}/${MAX_FAIL_COUNT}`);
+            // 成功：保存/更新缓存文件
+            saveCacheFile(id, result.games);
+            allGames.push(...result.games);
+            console.log(`✓ ID ${id}: ${result.games.length} matches${isCached ? " (refreshed)" : " (new)"}`);
+        } else if (isCached) {
+            // 已缓存的 ID 请求失败：使用缓存数据
+            const cachedGames = loadCacheFile(id);
+            if (cachedGames) {
+                allGames.push(...cachedGames);
+                console.log(`⟳ ID ${id}: using cached data (${cachedGames.length} matches)`);
             }
         }
         // 新探测的 ID 失败：不做处理
     }
 
-    cache.maxId = newMaxId;
-    saveCache(cache);
-
-    console.log(`Found ${validResults.length} valid endpoints, maxId: ${cache.maxId}`);
-
-    // 合并所有比赛，使用 matchId 去重
+    // 使用 bMatchId 去重
     const gameMap = new Map();
-    for (const result of validResults) {
-        for (const game of result.games) {
-            const key = game.matchId || `${game.matchDate}_${game.teamA?.teamSpName}_${game.teamB?.teamSpName}`;
-            if (!gameMap.has(key)) {
-                gameMap.set(key, game);
-            }
+    for (const game of allGames) {
+        const key = game.bMatchId || `${game.matchDate}_${game.teamA?.teamSpName}_${game.teamB?.teamSpName}`;
+        if (!gameMap.has(key)) {
+            gameMap.set(key, game);
         }
     }
 
-    const allGames = Array.from(gameMap.values());
-    console.log(`Total unique matches: ${allGames.length}`);
-    return allGames;
+    const uniqueGames = Array.from(gameMap.values());
+    console.log(`Total unique matches: ${uniqueGames.length}`);
+    return uniqueGames;
 }
 
 
