@@ -171,7 +171,7 @@ function packageGames(games, hasAlarm, calName) {
                 name: `无畏契约${game.secondLevelGameName}`,
                 email: "vct@qq.com",
             },
-            url: "https://web.haojiao.cc/h/t2Ud5pOQlscKLbRC/adPVjlSLS6j8ja7S",
+            url: "https://web.haojiao.cc/h/m/t2Ud5pOQlscKLbRC/2CN64lRZk2Oho465",
             status: "TENTATIVE",
             calName: calName ? calName : "VCT-CN",
             geo: { lat: 30.0095, lon: 120.2669 },
