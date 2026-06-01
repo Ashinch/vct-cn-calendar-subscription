@@ -67,3 +67,10 @@ npm start
 ```
 https://raw.githubusercontent.com/Ashinch/vct-cn-calendar-subscription/main/vct-cn-alarm.ics
 ```
+
+## Release 规范
+
+每逢新赛季或重要赛事开始时发布新版本：
+1. commit 改动，打 tag（格式 `x.y.z`，不带 `v` 前缀）
+2. 用 `gh release create` 发布，title 与 tag 相同
+3. release notes 固定格式：`Welcome to **_VALORANT Champions Tour YEAR: EVENT NAME_** !`
