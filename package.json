@@ -15,7 +15,7 @@
   "author": "Ashinch",
   "license": "GPL-3.0",
   "dependencies": {
-    "ics": "^2.27.0",
+    "ics": "^3.12.0",
     "superagent": "^6.1.0"
   }
 }
